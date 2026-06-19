@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameVault — Backlog &amp; Stats</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+
+<body class="bg-noise min-h-screen">
+
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-desktop w-[220px] shrink-0 border-r flex flex-col" style="border-color:var(--line); background:var(--bg-panel);">
+    <div class="px-6 py-6 flex items-center gap-2">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center font-display font-bold text-lg" style="background:linear-gradient(135deg,var(--magenta),var(--cyan)); color:#0a0c12;">G</div>
+      <div class="font-display text-lg font-bold tracking-wide">GAME<span style="color:var(--magenta);">VAULT</span></div>
+    </div>
+
+    <nav class="flex-1 px-3 mt-4 space-y-1">
+      <button data-view="backlog" class="nav-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Meu Backlog
+      </button>
+      <button data-view="search" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        Motor de Busca
+      </button>
+      <button data-view="feed" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+        Feed Social
+      </button>
+      <button data-view="stats" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+        Estatísticas
+      </button>
+    </nav>
+
+    <div class="px-4 py-5 border-t" style="border-color:var(--line);">
+      <div class="flex items-center gap-3 px-2">
+        <img src="https://api.dicebear.com/7.x/shapes/svg?seed=kael&backgroundColor=12151e" class="w-9 h-9 rounded-lg border" style="border-color:var(--line);">
+        <div class="min-w-0">
+          <div class="text-sm font-semibold truncate">Kael_Ferreira</div>
+          <div class="text-xs" style="color:var(--text-3);">142 jogos no acervo</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MOBILE TOPBAR -->
+  <div class="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 border-b" style="background:var(--bg-panel); border-color:var(--line);">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-md flex items-center justify-center font-display font-bold text-sm" style="background:linear-gradient(135deg,var(--magenta),var(--cyan)); color:#0a0c12;">G</div>
+      <div class="font-display text-sm font-bold">GAME<span style="color:var(--magenta);">VAULT</span></div>
+    </div>
+    <button id="mobileMenuBtn" class="p-2 rounded-md btn-ghost">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobileNav" class="hidden md:hidden fixed top-[57px] left-0 right-0 z-40 border-b p-2 space-y-1" style="background:var(--bg-panel); border-color:var(--line);">
+    <button data-view="backlog" class="nav-item-mobile w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium" style="color:var(--text-1);">📦 Meu Backlog</button>
+    <button data-view="search" class="nav-item-mobile w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium" style="color:var(--text-2);">🔍 Motor de Busca</button>
+    <button data-view="feed" class="nav-item-mobile w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium" style="color:var(--text-2);">📡 Feed Social</button>
+    <button data-view="stats" class="nav-item-mobile w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium" style="color:var(--text-2);">📊 Estatísticas</button>
+  </div>
+
+  <!-- MAIN -->
+  <main class="flex-1 min-w-0 md:pt-0 pt-16">
+
+    <!-- ============ VIEW 1: BACKLOG ============ -->
+    <section id="view-backlog" class="view active px-5 md:px-10 py-8 max-w-[1400px] mx-auto">
+      <header class="mb-7">
+        <p class="chip" style="border-color:var(--magenta-dim); color:var(--magenta);">BIBLIOTECA PESSOAL</p>
+        <h1 class="font-display text-3xl md:text-4xl font-bold mt-3">Meu Backlog</h1>
+        <p class="text-sm mt-1" style="color:var(--text-2);">Acompanhe o que está jogando, o que terminou e o que ainda vai encarar.</p>
+      </header>
+
+      <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+        <div class="flex gap-6 border-b w-full sm:w-auto" style="border-color:var(--line);">
+          <button class="tab-btn active font-display text-sm font-semibold pb-3 px-1" data-filter="jogando">JOGANDO <span class="ml-1 text-xs" style="color:var(--text-3);">(3)</span></button>
+          <button class="tab-btn font-display text-sm font-semibold pb-3 px-1" data-filter="terminei">TERMINEI <span class="ml-1 text-xs" style="color:var(--text-3);">(4)</span></button>
+          <button class="tab-btn font-display text-sm font-semibold pb-3 px-1" data-filter="quero">QUERO JOGAR <span class="ml-1 text-xs" style="color:var(--text-3);">(3)</span></button>
+          <button class="tab-btn font-display text-sm font-semibold pb-3 px-1" data-filter="todos">TODOS <span class="ml-1 text-xs" style="color:var(--text-3);">(10)</span></button>
+        </div>
+      </div>
+
+      <div id="backlogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+    </section>
+
+    <!-- ============ VIEW 2: SEARCH / IGDB ============ -->
+    <section id="view-search" class="view px-5 md:px-10 py-8 max-w-[1400px] mx-auto">
+      <header class="mb-7">
+        <p class="chip" style="border-color:var(--cyan-dim); color:var(--cyan);">INTEGRAÇÃO IGDB / TWITCH</p>
+        <h1 class="font-display text-3xl md:text-4xl font-bold mt-3">Motor de Busca</h1>
+        <p class="text-sm mt-1" style="color:var(--text-2);">Encontre qualquer jogo com metadados oficiais e adicione à sua coleção em um clique.</p>
+      </header>
+
+      <div class="relative max-w-2xl">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="igdbSearchInput" type="text" placeholder="Buscar jogo... (ex: Hollow Knight, Elden Ring)" class="input-dark w-full pl-11 pr-4 py-3.5 rounded-xl text-sm">
+        <div id="igdbLoading" class="hidden absolute right-4 top-1/2 -translate-y-1/2">
+          <div class="w-4 h-4 border-2 rounded-full animate-spin" style="border-color:var(--line); border-top-color:var(--cyan);"></div>
+        </div>
+      </div>
+      <p class="text-xs mt-2" style="color:var(--text-3);">Dados consumidos via API do IGDB (Twitch Developer) — capas, sinopse e gêneros oficiais.</p>
+
+      <div id="igdbResults" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8"></div>
+      <div id="igdbEmpty" class="mt-16 text-center" style="color:var(--text-3);">
+        <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <p class="text-sm">Digite o nome de um jogo para consultar a base do IGDB.</p>
+      </div>
+    </section>
+
+    <!-- ============ VIEW 3: FEED SOCIAL ============ -->
+    <section id="view-feed" class="view px-5 md:px-10 py-8 max-w-[900px] mx-auto">
+      <header class="mb-7">
+        <p class="chip" style="border-color:var(--green-dim); color:var(--green);">COMUNIDADE</p>
+        <h1 class="font-display text-3xl md:text-4xl font-bold mt-3">Feed Social</h1>
+        <p class="text-sm mt-1" style="color:var(--text-2);">O que a sua galera está jogando e avaliando agora.</p>
+      </header>
+
+      <div class="flex items-center gap-2 mb-6 flex-wrap">
+        <button class="feed-filter-btn chip active-filter" data-feedfilter="todos" style="cursor:pointer; color:var(--text-1); border-color:var(--magenta);">Tudo</button>
+        <button class="feed-filter-btn chip" data-feedfilter="recentes" style="cursor:pointer;">Mais recentes</button>
+        <button class="feed-filter-btn chip" data-feedfilter="notas" style="cursor:pointer;">Notas altas (8.5+)</button>
+      </div>
+
+      <div id="feedList" class="space-y-0 pl-4"></div>
+    </section>
+
+    <!-- ============ VIEW 4: STATS / PUBLIC PROFILE ============ -->
+    <section id="view-stats" class="view px-5 md:px-10 py-8 max-w-[1300px] mx-auto">
+      <header class="mb-7 flex items-start justify-between flex-wrap gap-4">
+        <div>
+          <p class="chip" style="border-color:var(--amber-dim); color:var(--amber);">PERFIL PÚBLICO</p>
+          <h1 class="font-display text-3xl md:text-4xl font-bold mt-3">Dashboard de Estatísticas</h1>
+          <p class="text-sm mt-1" style="color:var(--text-2);">Seus hábitos de jogo, transformados em dados.</p>
+        </div>
+        <button class="btn-primary px-5 py-2.5 rounded-lg text-sm flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
+          Compartilhar perfil
+        </button>
+      </header>
+
+      <!-- Profile summary card -->
+      <div class="rounded-2xl p-6 mb-6 flex flex-wrap items-center gap-6" style="background:linear-gradient(135deg, var(--bg-panel), var(--bg-card)); border:1px solid var(--line-soft);">
+        <img id="statsAvatarImg" src="https://api.dicebear.com/7.x/shapes/svg?seed=kael&backgroundColor=12151e" class="w-20 h-20 rounded-2xl border-2" style="border-color:var(--magenta);">
+        <div class="flex-1 min-w-[200px]">
+          <div id="statsUsername" class="font-display text-2xl font-bold glow-text">—</div>
+          <div id="statsBio" class="text-sm" style="color:var(--text-2);">—</div>
+        </div>
+        <div class="flex gap-8 text-center">
+          <div><div id="statsTotalJogos" class="font-display text-2xl font-bold" style="color:var(--magenta);">—</div><div class="text-xs" style="color:var(--text-3);">jogos</div></div>
+          <div><div id="statsTotalHoras" class="font-display text-2xl font-bold" style="color:var(--cyan);">—</div><div class="text-xs" style="color:var(--text-3);">horas</div></div>
+          <div><div id="statsMediaNotas" class="font-display text-2xl font-bold" style="color:var(--amber);">—</div><div class="text-xs" style="color:var(--text-3);">média notas</div></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+        <div class="stat-card rounded-2xl p-5 lg:col-span-2">
+          <h3 class="font-display text-sm font-bold mb-4 tracking-wide" style="color:var(--text-2);">HORAS JOGADAS POR MÊS</h3>
+          <canvas id="chartHoursMonth" height="180"></canvas>
+        </div>
+        <div class="stat-card rounded-2xl p-5">
+          <h3 class="font-display text-sm font-bold mb-4 tracking-wide" style="color:var(--text-2);">GÊNEROS FAVORITOS</h3>
+          <canvas id="chartGenres" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="stat-card rounded-2xl p-5">
+          <h3 class="font-display text-sm font-bold mb-4 tracking-wide" style="color:var(--text-2);">PLATAFORMAS</h3>
+          <canvas id="chartPlatforms" height="220"></canvas>
+        </div>
+        <div class="stat-card rounded-2xl p-5 lg:col-span-2">
+          <h3 class="font-display text-sm font-bold mb-4 tracking-wide" style="color:var(--text-2);">DISTRIBUIÇÃO DE NOTAS DADAS</h3>
+          <canvas id="chartScores" height="180"></canvas>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODAL: EDITAR JOGO ============ -->
+<div id="editModal" class="hidden fixed inset-0 z-50 modal-backdrop items-center justify-center px-4">
+  <div class="rounded-2xl w-full max-w-lg p-6" style="background:var(--bg-panel); border:1px solid var(--line);">
+    <div class="flex items-start justify-between mb-5">
+      <div>
+        <p class="text-xs" style="color:var(--text-3);">EDITANDO</p>
+        <h3 id="modalGameTitle" class="font-display text-xl font-bold mt-1">—</h3>
+      </div>
+      <button id="closeModalBtn" class="p-1.5 rounded-lg btn-ghost">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="text-xs font-medium" style="color:var(--text-2);">Status</label>
+        <div class="flex gap-2 mt-2">
+          <button class="status-pick-btn chip flex-1" data-status="jogando">Jogando</button>
+          <button class="status-pick-btn chip flex-1" data-status="terminei">Terminei</button>
+          <button class="status-pick-btn chip flex-1" data-status="quero">Quero jogar</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs font-medium" style="color:var(--text-2);">Nota (0-10)</label>
+          <input id="modalScoreInput" type="number" min="0" max="10" step="0.1" class="input-dark w-full mt-2 px-3 py-2 rounded-lg text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium" style="color:var(--text-2);">Horas jogadas</label>
+          <input id="modalHoursInput" type="number" min="0" class="input-dark w-full mt-2 px-3 py-2 rounded-lg text-sm">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-medium" style="color:var(--text-2);">Sua análise (review)</label>
+        <textarea id="modalReviewInput" rows="4" class="input-dark w-full mt-2 px-3 py-2 rounded-lg text-sm" placeholder="O que você achou desse jogo?"></textarea>
+      </div>
+
+      <label class="flex items-center gap-2 text-sm" style="color:var(--text-2);">
+        <input id="modalSpoilerInput" type="checkbox" class="w-4 h-4 rounded">
+        Esta análise contém spoilers
+      </label>
+    </div>
+
+    <div class="flex gap-3 mt-6">
+      <button id="cancelModalBtn" class="btn-ghost flex-1 py-2.5 rounded-lg text-sm font-medium">Cancelar</button>
+      <button id="saveModalBtn" class="btn-primary flex-1 py-2.5 rounded-lg text-sm">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div id="toast" class="hidden fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl font-display text-sm font-semibold flex items-center gap-2" style="background:var(--bg-panel); border:1px solid var(--green); color:var(--green); box-shadow:0 10px 30px -10px rgba(0,0,0,.6);">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg">Salvo com sucesso!</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="script.js"></script>
+</body>
+</html>
